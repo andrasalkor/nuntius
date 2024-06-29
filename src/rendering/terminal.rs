@@ -1,4 +1,5 @@
-use crate::game::Game;
+use crate::map::themes::tile_glyph;
+use crate::world::World;
 use crossterm::{cursor, event, execute, terminal};
 use std::io::{stdout, Error, Write};
 
@@ -13,22 +14,21 @@ pub fn setup_terminal() -> Result<(), Error> {
     Ok(())
 }
 
-pub fn draw_game(game: &Game) -> Result<(), Error> {
+pub fn render_map(world: &World) -> Result<(), Error> {
     let mut output = String::new();
-    for (y, row) in game.map.tiles.iter().enumerate() {
-        for (x, &tile) in row.iter().enumerate() {
-            if x == game.player_x && y == game.player_y {
-                output.push('@');
-            } else {
-                output.push(tile);
-            }
+    output.push_str(&world.map.name);
+    output.push_str("\r\n");
+    for y in 0..world.map.height {
+        for x in 0..world.map.width {
+            output.push(tile_glyph(world.map.xy_idx(x, y), &world.map));
         }
         output.push_str("\r\n");
     }
-
+    output.push_str(&world.map.name);
     execute!(stdout(), cursor::MoveTo(0, 0))?;
     stdout().write_all(output.as_bytes())?;
     stdout().flush()?;
+
     Ok(())
 }
 

@@ -1,21 +1,25 @@
-mod game;
 mod input;
+mod map;
+mod rect;
+pub use rect::Rect;
 mod rendering;
+mod world;
+mod components;
 
-use game::Game;
 use input::handle_input;
-use rendering::{cleanup_terminal, draw_game, setup_terminal};
+use rendering::{cleanup_terminal, render_map, setup_terminal};
 use std::io::Error;
 use std::result::Result;
+use world::World;
 
 fn main() -> Result<(), Error> {
     setup_terminal()?;
 
-    let mut game = Game::new();
+    let mut world = World::new();
 
     loop {
-        draw_game(&game)?;
-        if !handle_input(&mut game)? {
+        render_map(&world)?;
+        if !handle_input(&mut world)? {
             break;
         }
     }
