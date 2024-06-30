@@ -4,10 +4,10 @@ pub fn tile_glyph(idx: usize, map: &Map) -> char {
     let glyph;
 
     match map.tiles[idx] {
-        TileType::Wall => glyph = '#',
+        TileType::Wall => glyph = '÷',
         TileType::Floor => glyph = '.',
-        TileType::Corridor => glyph = ' ',
-        _ => glyph = ' ',
+        TileType::Corridor => glyph = '#',
+        TileType::Empty => glyph = ' ',
     }
 
     glyph

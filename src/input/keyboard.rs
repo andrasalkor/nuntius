@@ -1,4 +1,4 @@
-use crate::world::World;
+use crate::ecs::World;
 use crossterm::event::{self, KeyCode};
 use std::io;
 use std::time::Duration;

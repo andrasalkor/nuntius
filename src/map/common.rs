@@ -1,5 +1,4 @@
-use super::{Map, TileType};
-use crate::Rect;
+use super::{Map, Rect, TileType};
 use std::cmp::{max, min};
 
 pub fn make_room(room: &Rect, map: &mut Map) {
@@ -7,6 +6,28 @@ pub fn make_room(room: &Rect, map: &mut Map) {
         for x in room.x1..room.x2 {
             let idx = map.xy_idx(x, y);
             map.tiles[idx] = TileType::Floor;
+        }
+    }
+
+    for y in room.y1..room.y2 {
+        if room.x1 > 0 {
+            let idx = map.xy_idx(room.x1 - 1, y);
+            map.tiles[idx] = TileType::Wall;
+        }
+        if room.x2 < map.width {
+            let idx = map.xy_idx(room.x2, y);
+            map.tiles[idx] = TileType::Wall;
+        }
+
+        for x in room.x1..room.x2 {
+            if room.y1 > 0 {
+                let idx = map.xy_idx(x, room.y1 - 1);
+                map.tiles[idx] = TileType::Wall;
+            }
+            if room.y2 < map.height {
+                let idx = map.xy_idx(x, room.y2);
+                map.tiles[idx] = TileType::Wall;
+            }
         }
     }
 }
