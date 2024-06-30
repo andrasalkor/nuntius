@@ -9,7 +9,7 @@ use ecs::{
     World,
 };
 use input::handle_input;
-use rendering::{cleanup_terminal, render_map, setup_terminal};
+use rendering::{cleanup_terminal, render_title, render_map, setup_terminal};
 use std::io::Error;
 use std::result::Result;
 
@@ -22,7 +22,7 @@ fn main() -> Result<(), Error> {
     starting_map.build_map();
     let mut world = World::new(starting_map.get_map());
 
-    let player_entity = world.new_entity();
+    let player_entity = world.add_entity();
     world.add_component_to_entity(player_entity, Renderable { glyph: '@' });
     world.add_component_to_entity(player_entity, Player);
     world.add_component_to_entity(
@@ -34,6 +34,7 @@ fn main() -> Result<(), Error> {
     );
 
     loop {
+        render_title(&world)?;
         render_map(&world)?;
         if !handle_input(&mut world)? {
             break;

@@ -25,14 +25,14 @@ impl MapBuilder for SimpleMap {
 impl SimpleMap {
     pub fn new() -> Self {
         Self {
-            map: Map::new(80, 24, "Alpha Map"),
+            map: Map::new(80, 24, "SimpleMap"),
             starting_position: Position { x: 0, y: 0 },
             rooms: Vec::new(),
         }
     }
 
     pub fn simple_map(&mut self) {
-        const MAX_ROOMS: i32 = 24;
+        const MAX_ROOMS: i32 = 16;
         const MIN_HEIGHT: i32 = 3;
         const MAX_HEIGHT: i32 = 5;
         const MIN_WIDTH: i32 = 6;

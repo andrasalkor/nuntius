@@ -1,8 +1,8 @@
 use crate::ecs::{
-    components::{Player, Position, Renderable},
+    components::{Player, Position},
     ComponentVec,
 };
-use crate::map::{builder::SimpleMap, Map, MapBuilder, tiletype::tile_walkable};
+use crate::map::{Map, tiletype::tile_walkable};
 
 use std::cell::{RefCell, RefMut};
 
@@ -20,16 +20,16 @@ impl World {
             component_vecs: Vec::new(),
         }
     }
-
+    
+    // TODO - This is a system... maybe systems should go elsewhere or have different naming
     pub fn move_player(&mut self, dx: i32, dy: i32) {
-        // todo!("Function needed here because input/keyboard.rs relies on it.");
         let mut positions = self.borrow_component_vec::<Position>().unwrap();
         let mut players = self.borrow_component_vec::<Player>().unwrap();
         let zip = positions.iter_mut().zip(players.iter_mut());
         let iter =
             zip.filter_map(|(position, player)| Some((position.as_mut()?, player.as_mut()?)));
 
-        for (position, player) in iter {
+        for (position, _player) in iter {
             if tile_walkable(self.map.tiles[self.map.xy_idx(position.x + dx, position.y + dy)]) {
                 position.x += dx;
                 position.y += dy;
@@ -37,7 +37,7 @@ impl World {
         }
     }
 
-    pub fn new_entity(&mut self) -> usize {
+    pub fn add_entity(&mut self) -> usize {
         let entity_id = self.entities_count;
         for component_vec in self.component_vecs.iter_mut() {
             component_vec.push_none();

@@ -17,10 +17,20 @@ pub fn setup_terminal() -> Result<(), Error> {
     Ok(())
 }
 
+// Temporary feature: render the name of the map
+pub fn render_title(world: &World) -> Result<(), Error> {
+    let mut output = String::new();
+    output.push_str(&world.map.name);
+    execute!(stdout(), cursor::MoveTo(0, 0))?;
+    stdout().write_all(output.as_bytes())?;
+    stdout().flush()?;
+
+    Ok(())
+}
+
 pub fn render_map(world: &World) -> Result<(), Error> {
     let mut renderables = world.borrow_component_vec::<Renderable>().unwrap();
     let mut positions = world.borrow_component_vec::<Position>().unwrap();
-    let zip = renderables.iter_mut().zip(positions.iter_mut());
 
     let mut output = String::new();
     for y in 0..world.map.height {
