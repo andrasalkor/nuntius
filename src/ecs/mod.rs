@@ -5,7 +5,7 @@ pub use world::World;
 
 use std::cell::RefCell;
 
-pub trait ComponentVec {
+trait ComponentVec {
     fn as_any(&self) -> &dyn std::any::Any;
     fn as_any_mut(&mut self) -> &mut dyn std::any::Any;
     fn push_none(&mut self);

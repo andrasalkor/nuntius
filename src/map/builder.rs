@@ -3,9 +3,9 @@ use crate::ecs::Position;
 use rand::Rng;
 
 pub struct SimpleMap {
-    pub map: Map,
-    pub starting_position: Position,
-    pub rooms: Vec<Rect>,
+    map: Map,
+    starting_position: Position,
+    rooms: Vec<Rect>,
 }
 
 impl MapBuilder for SimpleMap {
@@ -31,7 +31,7 @@ impl SimpleMap {
         }
     }
 
-    pub fn simple_map(&mut self) {
+    fn simple_map(&mut self) {
         const MAX_ROOMS: i32 = 16;
         const MIN_HEIGHT: i32 = 3;
         const MAX_HEIGHT: i32 = 5;
