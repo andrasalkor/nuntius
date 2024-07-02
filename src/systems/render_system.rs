@@ -1,5 +1,15 @@
-use crate::ecs::{ECS, World};
+// Render System
+// -------------
+// This system is responsible for rendering
+// various elements of the game in the terminal.
+//
+// Currently, it renders the map title
+// TODO - change render_title to render_message,
+// this is where game messages will have to be
+// rendered in the future.
+
 use crate::components::{Position, Renderable};
+use crate::ecs::{World, ECS};
 use crate::map::themes::tile_glyph;
 
 use crossterm::{cursor, execute};
@@ -45,4 +55,3 @@ pub fn render_map(ecs: &ECS, world: &World) -> Result<(), Error> {
 
     Ok(())
 }
-

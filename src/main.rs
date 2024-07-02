@@ -1,14 +1,24 @@
-mod ecs;
+// Nuntius
+// -------
+// This file is responsible for setting up the game
+// and making sure it registers all systems and
+// everything else needed to be handled.
+
 mod components;
-mod systems;
+mod ecs;
 mod map;
+mod systems;
 
 use crate::map::{builder::SimpleMap, MapBuilder}; // This shouldn't be here - refer to TODO below
-use ecs::{World, ECS};
 use components::{Player, Position, Renderable};
-use systems::{input_system::handle_input, terminal_system::{setup_terminal, cleanup_terminal}, render_system::{render_title, render_map}};
+use ecs::{World, ECS};
 use std::io::Error;
 use std::result::Result;
+use systems::{
+    input_system::handle_input,
+    render_system::{render_map, render_title},
+    terminal_system::{cleanup_terminal, setup_terminal},
+};
 
 fn main() -> Result<(), Error> {
     setup_terminal()?;
@@ -32,6 +42,7 @@ fn main() -> Result<(), Error> {
         },
     );
 
+    // TODO - Rewrite program so we register all systems in the main loop.
     loop {
         render_title(&world)?;
         render_map(&ecs, &world)?;

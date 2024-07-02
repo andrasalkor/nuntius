@@ -8,8 +8,6 @@ pub struct World {
 
 impl World {
     pub fn new(starting_map: Map) -> Self {
-        Self {
-            map: starting_map,
-        }
-    }    
+        Self { map: starting_map }
+    }
 }

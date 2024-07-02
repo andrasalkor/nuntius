@@ -1,3 +1,8 @@
+// Terminal System
+// ---------------
+// This system is responsible for setting up and
+// clearing the terminal the game is running in.
+
 use crossterm::{cursor, event, execute, terminal};
 use std::io::{stdout, Error};
 

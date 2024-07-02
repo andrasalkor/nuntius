@@ -1,3 +1,7 @@
+// Components
+// ----------
+// All components (for now) are stored in this file.
+
 #[derive(PartialEq, Clone)]
 pub struct Position {
     pub x: i32,

@@ -1,8 +1,16 @@
+// Entity Component System module
+// ------------------------------
+// Sets up a basic entity component system that
+// can create entities and add components to them.
+//
+// The World module is a leftover to-be removed in
+// a future version.
+
 pub mod world;
 pub use world::World;
 
-use crate::map::tiletype::tile_walkable;
 use crate::components::*;
+use crate::map::tiletype::tile_walkable;
 
 use std::cell::{RefCell, RefMut};
 
