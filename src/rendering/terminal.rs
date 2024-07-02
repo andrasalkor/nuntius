@@ -1,6 +1,7 @@
 use crate::ecs::{
     components::{Position, Renderable},
     World,
+    ECS,
 };
 use crate::map::themes::tile_glyph;
 use crossterm::{cursor, event, execute, terminal};
@@ -28,9 +29,9 @@ pub fn render_title(world: &World) -> Result<(), Error> {
     Ok(())
 }
 
-pub fn render_map(world: &World) -> Result<(), Error> {
-    let mut renderables = world.borrow_component_vec::<Renderable>().unwrap();
-    let mut positions = world.borrow_component_vec::<Position>().unwrap();
+pub fn render_map(ecs: &ECS, world: &World) -> Result<(), Error> {
+    let mut renderables = ecs.borrow_component_vec::<Renderable>().unwrap();
+    let mut positions = ecs.borrow_component_vec::<Position>().unwrap();
 
     let mut output = String::new();
     for y in 0..world.map.height {

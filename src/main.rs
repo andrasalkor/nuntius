@@ -3,10 +3,10 @@ mod input;
 mod map;
 mod rendering;
 
-use crate::map::{builder::SimpleMap, MapBuilder}; // This shouldn't be here - refer to TODO below
+use crate::map::{builder::SimpleMap, MapBuilder, tiletype::tile_walkable}; // This shouldn't be here - refer to TODO below
 use ecs::{
     components::{Player, Position, Renderable},
-    World,
+    World, ECS,
 };
 use input::handle_input;
 use rendering::{cleanup_terminal, render_title, render_map, setup_terminal};
@@ -20,12 +20,14 @@ fn main() -> Result<(), Error> {
     // TODO - Refactor code so this is handled by its proper system
     let mut starting_map = SimpleMap::new();
     starting_map.build_map();
-    let mut world = World::new(starting_map.get_map());
+    let world = World::new(starting_map.get_map());
 
-    let player_entity = world.add_entity();
-    world.add_component_to_entity(player_entity, Renderable { glyph: '@' });
-    world.add_component_to_entity(player_entity, Player);
-    world.add_component_to_entity(
+    // Initialise ECS and add player entity
+    let mut ecs = ECS::new();
+    let player_entity = ecs.add_entity();
+    ecs.add_component_to_entity(player_entity, Renderable { glyph: '@' });
+    ecs.add_component_to_entity(player_entity, Player);
+    ecs.add_component_to_entity(
         player_entity,
         Position {
             x: starting_map.get_starting_position().x,
@@ -35,8 +37,8 @@ fn main() -> Result<(), Error> {
 
     loop {
         render_title(&world)?;
-        render_map(&world)?;
-        if !handle_input(&mut world)? {
+        render_map(&ecs, &world)?;
+        if !handle_input(&mut ecs, &world)? {
             break;
         }
     }
