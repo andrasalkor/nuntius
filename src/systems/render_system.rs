@@ -1,22 +1,9 @@
-use crate::ecs::{
-    components::{Position, Renderable},
-    World,
-    ECS,
-};
+use crate::ecs::{ECS, World};
+use crate::components::{Position, Renderable};
 use crate::map::themes::tile_glyph;
-use crossterm::{cursor, event, execute, terminal};
-use std::io::{stdout, Error, Write};
 
-pub fn setup_terminal() -> Result<(), Error> {
-    terminal::enable_raw_mode()?;
-    execute!(
-        stdout(),
-        terminal::EnterAlternateScreen,
-        event::EnableMouseCapture,
-        cursor::Hide
-    )?;
-    Ok(())
-}
+use crossterm::{cursor, execute};
+use std::io::{stdout, Error, Write};
 
 // Temporary feature: render the name of the map
 pub fn render_title(world: &World) -> Result<(), Error> {
@@ -59,13 +46,3 @@ pub fn render_map(ecs: &ECS, world: &World) -> Result<(), Error> {
     Ok(())
 }
 
-pub fn cleanup_terminal() -> Result<(), Error> {
-    terminal::disable_raw_mode()?;
-    execute!(
-        stdout(),
-        terminal::LeaveAlternateScreen,
-        event::DisableMouseCapture,
-        cursor::Show
-    )?;
-    Ok(())
-}

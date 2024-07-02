@@ -1,9 +1,8 @@
-pub mod components;
-pub use components::{Player, Position};
 pub mod world;
 pub use world::World;
 
 use crate::map::tiletype::tile_walkable;
+use crate::components::*;
 
 use std::cell::{RefCell, RefMut};
 

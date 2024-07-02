@@ -1,5 +1,5 @@
 use super::{common::*, Map, MapBuilder, Rect};
-use crate::ecs::Position;
+use crate::components::Position;
 use rand::Rng;
 
 pub struct SimpleMap {

@@ -8,7 +8,7 @@ pub use rect::Rect;
 pub mod map;
 pub use map::Map;
 
-use crate::ecs::Position;
+use crate::components::Position;
 
 pub trait MapBuilder {
     fn build_map(&mut self);

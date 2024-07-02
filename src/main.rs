@@ -1,15 +1,12 @@
 mod ecs;
-mod input;
+mod components;
+mod systems;
 mod map;
-mod rendering;
 
-use crate::map::{builder::SimpleMap, MapBuilder, tiletype::tile_walkable}; // This shouldn't be here - refer to TODO below
-use ecs::{
-    components::{Player, Position, Renderable},
-    World, ECS,
-};
-use input::handle_input;
-use rendering::{cleanup_terminal, render_title, render_map, setup_terminal};
+use crate::map::{builder::SimpleMap, MapBuilder}; // This shouldn't be here - refer to TODO below
+use ecs::{World, ECS};
+use components::{Player, Position, Renderable};
+use systems::{input_system::handle_input, terminal_system::{setup_terminal, cleanup_terminal}, render_system::{render_title, render_map}};
 use std::io::Error;
 use std::result::Result;
 
