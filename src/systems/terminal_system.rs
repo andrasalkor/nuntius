@@ -3,7 +3,7 @@
 // This system is responsible for setting up and
 // clearing the terminal the game is running in.
 
-use crossterm::{cursor, event, execute, terminal};
+use crossterm::{event, execute, terminal};
 use std::io::{stdout, Error};
 
 pub fn setup_terminal() -> Result<(), Error> {
@@ -11,8 +11,7 @@ pub fn setup_terminal() -> Result<(), Error> {
     execute!(
         stdout(),
         terminal::EnterAlternateScreen,
-        event::EnableMouseCapture,
-        cursor::Hide
+        event::EnableMouseCapture
     )?;
     Ok(())
 }
@@ -22,8 +21,7 @@ pub fn cleanup_terminal() -> Result<(), Error> {
     execute!(
         stdout(),
         terminal::LeaveAlternateScreen,
-        event::DisableMouseCapture,
-        cursor::Show
+        event::DisableMouseCapture
     )?;
     Ok(())
 }
