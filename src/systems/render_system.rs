@@ -69,9 +69,10 @@ pub fn render_map(ecs: &ECS, world: &World) -> Result<(), Error> {
     for (_player, position) in iter {
         execute!(
             stdout(),
-            cursor::MoveTo(position.x as u16, position.y as u16 + MAP_OFFSET.y as u16)
+            cursor::MoveTo(position.x as u16 + MAP_OFFSET.x as u16, position.y as u16 + MAP_OFFSET.y as u16)
         )?;
     }
+
     stdout().flush()?;
 
     Ok(())

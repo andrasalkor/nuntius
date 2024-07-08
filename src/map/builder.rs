@@ -32,7 +32,7 @@ impl SimpleMap {
     }
 
     fn simple_map(&mut self) {
-        const MAX_ROOMS: i32 = 16;
+        const MAX_ROOMS: i32 = 12;
         const MIN_HEIGHT: i32 = 3;
         const MAX_HEIGHT: i32 = 5;
         const MIN_WIDTH: i32 = 6;
@@ -57,12 +57,12 @@ impl SimpleMap {
                 if !self.rooms.is_empty() {
                     let (new_x, new_y) = new_room.center();
                     let (prev_x, prev_y) = self.rooms[self.rooms.len() - 1].center();
-                    if rand::thread_rng().gen_range(0..=1) == 0 {
+                    if rand::thread_rng().gen_range(0..2) == 1 {
                         make_horizontal_corridor(&mut self.map, prev_x, new_x, prev_y);
                         make_vertical_corridor(&mut self.map, prev_y, new_y, new_x);
                     } else {
                         make_vertical_corridor(&mut self.map, prev_y, new_y, prev_x);
-                        make_horizontal_corridor(&mut self.map, prev_x, new_y, new_x);
+                        make_horizontal_corridor(&mut self.map, prev_x, new_x, new_y);
                     }
                 }
 

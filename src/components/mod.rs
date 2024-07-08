@@ -14,7 +14,3 @@ pub struct Renderable {
 }
 
 pub struct Player;
-
-// pub struct Name {
-//     pub name: String,
-// }
