@@ -16,7 +16,7 @@ use std::io::Error;
 use std::result::Result;
 use systems::{
     input_system::handle_input,
-    render_system::{render_map, render_title},
+    render_system::{render_map, render_message},
     terminal_system::{cleanup_terminal, setup_terminal},
 };
 
@@ -44,7 +44,7 @@ fn main() -> Result<(), Error> {
 
     // TODO - Rewrite program so we register all systems in the main loop.
     loop {
-        render_title(&world)?;
+        render_message(&world)?;
         render_map(&ecs, &world)?;
         if !handle_input(&mut ecs, &world)? {
             break;

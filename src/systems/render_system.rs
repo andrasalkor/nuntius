@@ -18,8 +18,8 @@ use std::io::{stdout, Error, Write};
 const MESSAGE_OFFSET: Position = Position { x: 0, y: 0 };
 const MAP_OFFSET: Position = Position { x: 0, y: 1 };
 
-// Temporary feature: render the name of the map
-pub fn render_title(world: &World) -> Result<(), Error> {
+// Temporary feature: renders the name of the map
+pub fn render_message(world: &World) -> Result<(), Error> {
     let mut output = String::new();
     output.push_str(&world.map.name);
     execute!(
