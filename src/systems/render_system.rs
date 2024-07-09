@@ -32,41 +32,42 @@ pub fn render_message(world: &World) -> Result<(), Error> {
 }
 
 pub fn render_map(ecs: &ECS, world: &World) -> Result<(), Error> {
-    // Render map based on whether an entity stands on a tile
-    let mut output = String::new();
+    // Get current map's tiles as chars
+    let mut tiles: Vec<char> = Vec::with_capacity((world.map.height * world.map.width) as usize);
+    let mut tile_idx = 0;
+    while tile_idx != world.map.tiles.len() {
+        tiles.push(tile_glyph(tile_idx, &world.map));
+        tile_idx += 1;
+    }
 
-    // Check if there are any renderables with positions
-    // TODO - Is there a smarter way of going about this?
+    // Inject renderable entities into tiles as glyphs
+    //
+    // Check if there are renderable entities with positions
     if ecs.borrow_component_vec::<Renderable>().is_some()
         && ecs.borrow_component_vec::<Position>().is_some()
     {
+        // Build iterator
         let mut renderables = ecs.borrow_component_vec::<Renderable>().unwrap();
         let mut positions = ecs.borrow_component_vec::<Position>().unwrap();
-
-        for y in 0..world.map.height {
-            for x in 0..world.map.width {
-                let iter = renderables.iter_mut().zip(positions.iter_mut()).filter_map(
-                    |(renderable, position)| Some((renderable.as_mut()?, position.as_mut()?)),
-                );
-                for (renderable, position) in iter {
-                    if position == (&Position { x: x, y: y }) {
-                        output.push(renderable.glyph);
-                    } else {
-                        output.push(tile_glyph(world.map.xy_idx(x, y), &world.map));
-                    }
-                }
-            }
-            output.push_str("\r\n");
-        }
-    } else {
-        // Else just render the map itself
-        for y in 0..world.map.height {
-            for x in 0..world.map.width {
-                output.push(tile_glyph(world.map.xy_idx(x, y), &world.map));
-            }
-            output.push_str("\r\n");
+        let iter = renderables
+            .iter_mut()
+            .zip(positions.iter_mut())
+            .filter_map(|(renderable, position)| Some((renderable.as_mut()?, position.as_mut()?)));
+        // Inject render glyphs into tiles
+        for (renderable, position) in iter {
+            tiles[world.map.xy_idx(position.x, position.y)] = renderable.glyph;
         }
     }
+    
+    // Push tiles into output string
+    let mut output = String::new();
+    for y in 0..world.map.height {
+        for x in 0..world.map.width {
+            output.push(tiles[world.map.xy_idx(x, y)]);
+        }
+        output.push_str("\r\n");
+    }
+
     // Write output to screen
     execute!(
         stdout(),
@@ -76,7 +77,8 @@ pub fn render_map(ecs: &ECS, world: &World) -> Result<(), Error> {
     stdout().flush()?;
 
     // Get cursor to the last player's position
-    // Check if player exists with a position first
+    //
+    // Check if any players exist with a position first
     if ecs.borrow_component_vec::<Player>().is_some() {
         execute!(stdout(), cursor::Show)?;
         let mut players = ecs.borrow_component_vec::<Player>().unwrap();
